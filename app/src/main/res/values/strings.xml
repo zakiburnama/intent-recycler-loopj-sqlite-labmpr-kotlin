@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">intent_dan_mengirim_data</string>
+    <string name="intent_explicit">Intent Explicit</string>
+    <string name="intent_dan_mengirim_data">Intent dan Mengirim Data</string>
+    <string name="intent_dan_mengirim_objek">Intent dan Mengirim Objek</string>
+    <string name="intent_implicit">Intent Implicit</string>
+    <string name="detail_activity">Detail Activity</string>
+    <string name="masukkan_text_untuk_dikirim">Masukkan Text Untuk Dikirim</string>
+</resources>
