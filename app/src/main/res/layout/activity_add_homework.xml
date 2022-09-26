@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".AddHomeworkActivity">
 
+    <ImageButton
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_delete_24"
+        android:contentDescription="TODO" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
@@ -13,16 +23,16 @@
         android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/btn_delete">
 
         <EditText
             android:id="@+id/edt_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="title"
+            android:autofillHints=""
+            android:hint="@string/title"
             android:inputType="textCapSentences"
-            android:maxLines="1"
-            android:autofillHints="" />
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -38,7 +48,7 @@
             android:id="@+id/edt_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="description"
+            android:hint="@string/description"
             android:inputType="textCapSentences"
             android:maxLines="1"
             android:autofillHints="" />
@@ -49,19 +59,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="submit"
+        android:text="@string/submit"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout2"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout2"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
-
-    <Button
-        android:id="@+id/btn_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Delete"
-        app:layout_constraintEnd_toEndOf="@+id/btn_submit"
-        app:layout_constraintStart_toStartOf="@+id/btn_submit"
-        app:layout_constraintTop_toBottomOf="@+id/btn_submit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

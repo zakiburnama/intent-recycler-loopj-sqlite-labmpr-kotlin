@@ -6,10 +6,9 @@ import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.provider.BaseColumns._ID
-import com.example.intent_dan_mengirim_data.db.DatabaseContract.NoteColumns.Companion.TABLE_NAME
+import com.example.intent_dan_mengirim_data.db.DatabaseContract.HomeworkColumns.Companion.TABLE_NAME
 
-//class HomeworkHelper {
-//}
+
 class HomeworkHelper(context: Context) {
 
     private var dataBaseHelper: DatabaseHelper = DatabaseHelper(context)
@@ -50,7 +49,8 @@ class HomeworkHelper(context: Context) {
     }
 
     fun queryById(id: String): Cursor {
-        return database.query(DATABASE_TABLE, null, "$_ID = ?", arrayOf(id), null, null, null, null)
+        return database.query(DATABASE_TABLE, null, "$_ID = ?", arrayOf(id),
+            null, null, null, null)
     }
 
     fun insert(values: ContentValues?): Long {
@@ -65,3 +65,4 @@ class HomeworkHelper(context: Context) {
         return database.delete(DATABASE_TABLE, "$_ID = '$id'", null)
     }
 }
+

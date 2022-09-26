@@ -6,18 +6,19 @@ import com.example.intent_dan_mengirim_data.db.DatabaseContract
 
 object MappingHelper {
 
-    fun mapCursorToArrayList(notesCursor: Cursor?): ArrayList<Homework> {
-        val notesList = ArrayList<Homework>()
+    fun mapCursorToArrayList(homeworkCursor: Cursor?): ArrayList<Homework> {
+        val homeworkList = ArrayList<Homework>()
 
-        notesCursor?.apply {
+        homeworkCursor?.apply {
             while (moveToNext()) {
-                val id = getInt(getColumnIndexOrThrow(DatabaseContract.NoteColumns._ID))
-                val title = getString(getColumnIndexOrThrow(DatabaseContract.NoteColumns.TITLE))
-                val description = getString(getColumnIndexOrThrow(DatabaseContract.NoteColumns.DESCRIPTION))
-                val date = getString(getColumnIndexOrThrow(DatabaseContract.NoteColumns.DATE))
-                notesList.add(Homework(id, title, description, date))
+                val id = getInt(getColumnIndexOrThrow(DatabaseContract.HomeworkColumns._ID))
+                val title = getString(getColumnIndexOrThrow(DatabaseContract.HomeworkColumns.TITLE))
+                val description =
+                    getString(getColumnIndexOrThrow(DatabaseContract.HomeworkColumns.DESCRIPTION))
+                val date = getString(getColumnIndexOrThrow(DatabaseContract.HomeworkColumns.DATE))
+                homeworkList.add(Homework(id, title, description, date))
             }
         }
-        return notesList
+        return homeworkList
     }
 }

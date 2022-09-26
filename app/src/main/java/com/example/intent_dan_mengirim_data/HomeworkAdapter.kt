@@ -10,55 +10,56 @@ import com.example.intent_dan_mengirim_data.databinding.ItemHomeworkBinding
 //}
 
 class HomeworkAdapter(private val onItemClickCallback: OnItemClickCallback) :
-    RecyclerView.Adapter<HomeworkAdapter.NoteViewHolder>() {
-    var listNotes = ArrayList<Homework>()
-        set(listNotes) {
-            if (listNotes.size > 0) {
-                this.listNotes.clear()
+    RecyclerView.Adapter<HomeworkAdapter.HomeworkViewHolder>() {
+    var listHomework = ArrayList<Homework>()
+        set(listHomework) {
+            if (listHomework.size > 0) {
+                this.listHomework.clear()
             }
-            this.listNotes.addAll(listNotes)
+            this.listHomework.addAll(listHomework)
         }
-
-    fun addItem(note: Homework) {
-        this.listNotes.add(note)
-        notifyItemInserted(this.listNotes.size - 1)
+    interface OnItemClickCallback {
+        fun onItemClicked(selectedHomework: Homework?, position: Int?)
     }
 
-    fun updateItem(position: Int, note: Homework) {
-        this.listNotes[position] = note
-        notifyItemChanged(position, note)
+    fun addItem(homework: Homework) {
+        this.listHomework.add(homework)
+        notifyItemInserted(this.listHomework.size - 1)
+    }
+
+    fun updateItem(position: Int, homework: Homework) {
+        this.listHomework[position] = homework
+        notifyItemChanged(position, homework)
     }
 
     fun removeItem(position: Int) {
-        this.listNotes.removeAt(position)
+        this.listHomework.removeAt(position)
         notifyItemRemoved(position)
-        notifyItemRangeChanged(position, this.listNotes.size)
+        notifyItemRangeChanged(position, this.listHomework.size)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_homework, parent, false)
-        return NoteViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeworkViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_homework, parent
+            , false)
+        return HomeworkViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        holder.bind(listNotes[position])
+    override fun onBindViewHolder(holder: HomeworkViewHolder, position: Int) {
+        holder.bind(listHomework[position])
     }
 
-    override fun getItemCount(): Int = this.listNotes.size
+    override fun getItemCount(): Int = this.listHomework.size
 
-    inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class HomeworkViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemHomeworkBinding.bind(itemView)
-        fun bind(note: Homework) {
-            binding.tvItemTitle.text = note.title
-            binding.tvItemDate.text = note.date
-            binding.tvItemDescription.text = note.description
-            binding.cvItemNote.setOnClickListener {
-                onItemClickCallback.onItemClicked(note, adapterPosition)
+        fun bind(homework: Homework) {
+            binding.tvItemTitle.text = homework.title
+            binding.tvItemDate.text = homework.date
+            binding.tvItemDescription.text = homework.description
+            binding.cvItemHomework.setOnClickListener {
+                onItemClickCallback.onItemClicked(homework, adapterPosition)
             }
         }
     }
-
-    interface OnItemClickCallback {
-        fun onItemClicked(selectedNote: Homework?, position: Int?)
-    }
 }
+

@@ -11,4 +11,3 @@ data class Homework(
     var date: String? = null
 ) : Parcelable
 
-//data class Homework()

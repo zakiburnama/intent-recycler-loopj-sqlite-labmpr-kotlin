@@ -3,10 +3,9 @@ package com.example.intent_dan_mengirim_data.db
 import android.provider.BaseColumns
 
 internal class DatabaseContract {
-
-    internal class NoteColumns : BaseColumns {
+    internal class HomeworkColumns : BaseColumns {
         companion object {
-            const val TABLE_NAME = "note"
+            const val TABLE_NAME = "homework"
             const val _ID = "_id"
             const val TITLE = "title"
             const val DESCRIPTION = "description"
@@ -14,3 +13,5 @@ internal class DatabaseContract {
         }
     }
 }
+
+

@@ -6,4 +6,7 @@
     <string name="intent_implicit">Intent Implicit</string>
     <string name="detail_activity">Detail Activity</string>
     <string name="masukkan_text_untuk_dikirim">Masukkan Text Untuk Dikirim</string>
+    <string name="title">title</string>
+    <string name="description">description</string>
+    <string name="submit">submit</string>
 </resources>

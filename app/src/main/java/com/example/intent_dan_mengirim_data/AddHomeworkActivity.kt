@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.intent_dan_mengirim_data.databinding.ActivityAddHomeworkBinding
@@ -29,7 +28,8 @@ class AddHomeworkActivity : AppCompatActivity() {
         homeworkHelper = HomeworkHelper.getInstance(applicationContext)
         homeworkHelper.open()
 
-        homework = intent.getParcelableExtra(EXTRA_NOTE)
+        // Cek apakah ada data homework
+        homework = intent.getParcelableExtra(EXTRA_HOMEWORK)
         if (homework != null) {
             position = intent.getIntExtra(EXTRA_POSITION, 0)
             isEdit = true
@@ -40,6 +40,7 @@ class AddHomeworkActivity : AppCompatActivity() {
         val actionBarTitle: String
         val btnTitle: String
 
+        // Jika ada data pada homework bertati melakukan update
         if (isEdit) {
             actionBarTitle = "Ubah"
             btnTitle = "Update"
@@ -59,15 +60,9 @@ class AddHomeworkActivity : AppCompatActivity() {
 
         binding.btnSubmit.text = btnTitle
 
-        binding.btnSubmit.setOnClickListener {
-            addNewHomework()
-            Toast.makeText(this, "ADD", Toast.LENGTH_SHORT).show()
-        }
+        binding.btnSubmit.setOnClickListener { addNewHomework() }
 
-        binding.btnDelete.setOnClickListener {
-            showAlertDialog(ALERT_DIALOG_DELETE)
-            Toast.makeText(this, "DELETE", Toast.LENGTH_SHORT).show()
-        }
+        binding.btnDelete.setOnClickListener { showAlertDialog(ALERT_DIALOG_DELETE) }
     }
 
     fun addNewHomework() {
@@ -75,7 +70,7 @@ class AddHomeworkActivity : AppCompatActivity() {
         val description = binding.edtDescription.text.toString().trim()
 
         if (title.isEmpty()) {
-            binding.edtTitle.error = "Field can not be blank"
+            binding.edtTitle.error = "Title tidak boleh kosong"
             return
         }
 
@@ -83,12 +78,12 @@ class AddHomeworkActivity : AppCompatActivity() {
         homework?.description = description
 
         val intent = Intent()
-        intent.putExtra(EXTRA_NOTE, homework)
+        intent.putExtra(EXTRA_HOMEWORK, homework)
         intent.putExtra(EXTRA_POSITION, position)
 
         val values = ContentValues()
-        values.put(DatabaseContract.NoteColumns.TITLE, title)
-        values.put(DatabaseContract.NoteColumns.DESCRIPTION, description)
+        values.put(DatabaseContract.HomeworkColumns.TITLE, title)
+        values.put(DatabaseContract.HomeworkColumns.DESCRIPTION, description)
 
         if (isEdit) {
             val result = homeworkHelper.update(homework?.id.toString(), values)
@@ -96,11 +91,12 @@ class AddHomeworkActivity : AppCompatActivity() {
                 setResult(RESULT_UPDATE, intent)
                 finish()
             } else {
-                Toast.makeText(this, "Gagal mengupdate data", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Gagal memperbaharui data", Toast.LENGTH_SHORT)
+                    .show()
             }
         } else {
             homework?.date = getCurrentDate()
-            values.put(DatabaseContract.NoteColumns.DATE, getCurrentDate())
+            values.put(DatabaseContract.HomeworkColumns.DATE, getCurrentDate())
             val result = homeworkHelper.insert(values)
 
             if (result > 0) {
@@ -122,21 +118,6 @@ class AddHomeworkActivity : AppCompatActivity() {
         return dateFormat.format(date)
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        if (isEdit) {
-//            menuInflater.inflate(R.menu.menu_form, menu)
-//        }
-//        return super.onCreateOptionsMenu(menu)
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.action_delete -> showAlertDialog(ALERT_DIALOG_DELETE)
-//            android.R.id.home -> showAlertDialog(ALERT_DIALOG_CLOSE)
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
-
     override fun onBackPressed() {
         showAlertDialog(ALERT_DIALOG_CLOSE)
     }
@@ -148,10 +129,10 @@ class AddHomeworkActivity : AppCompatActivity() {
 
         if (isDialogClose) {
             dialogTitle = "Batal"
-            dialogMessage = "Apakah anda ingin membatalkan perubahan pada form?"
+            dialogMessage = "Apakah anda ingin membatalkan memperbaharui data?"
         } else {
+            dialogTitle = "Hapus Homework"
             dialogMessage = "Apakah anda yakin ingin menghapus item ini?"
-            dialogTitle = "Hapus Note"
         }
 
         val alertDialogBuilder = AlertDialog.Builder(this)
@@ -170,7 +151,8 @@ class AddHomeworkActivity : AppCompatActivity() {
                         setResult(RESULT_DELETE, intent)
                         finish()
                     } else {
-                        Toast.makeText(this, "Gagal menghapus data", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Gagal menghapus data", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -180,7 +162,7 @@ class AddHomeworkActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_NOTE = "extra_note"
+        const val EXTRA_HOMEWORK = "extra_homework"
         const val EXTRA_POSITION = "extra_position"
         const val RESULT_ADD = 101
         const val RESULT_UPDATE = 201
