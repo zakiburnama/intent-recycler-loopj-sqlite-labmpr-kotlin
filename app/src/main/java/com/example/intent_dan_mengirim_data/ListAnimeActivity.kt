@@ -26,9 +26,12 @@ class ListAnimeActivity : AppCompatActivity() {
         binding = ActivityListAnimeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        getListAnime()
-        list.addAll(listAnimeku)
-        showRecyclerList()
+        // Data dari API
+        getListAnime()
+
+        // Data dari String.xml
+//        list.addAll(listAnimeku)
+//        showRecyclerList()
     }
 
     //

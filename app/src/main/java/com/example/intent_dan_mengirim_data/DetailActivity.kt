@@ -48,8 +48,9 @@ class DetailActivity : AppCompatActivity() {
         }
 
 
-
+        // Untuk NETWORKING
         getAnime = intent?.getStringExtra(EXTRA_ANIME).toString()
+
         val getAnimeImg = intent?.getStringExtra(EXTRA_ANIME_IMG).toString()
         Picasso.get().load(getAnimeImg).into(binding.ivAnime)
 

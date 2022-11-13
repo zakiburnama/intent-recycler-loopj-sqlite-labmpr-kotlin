@@ -29,10 +29,10 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.btn_intent_data -> {
-//                val text = etKirimData.text.toString()
-//                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-//                intent.putExtra(DetailActivity.EXTRA_TEXT, text)
-                val intent = Intent(this@MainActivity, HomeworkActivity::class.java)
+                val text = etKirimData.text.toString()
+                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_TEXT, text)
+//                val intent = Intent(this@MainActivity, HomeworkActivity::class.java)
                 startActivity(intent)
             }
 
