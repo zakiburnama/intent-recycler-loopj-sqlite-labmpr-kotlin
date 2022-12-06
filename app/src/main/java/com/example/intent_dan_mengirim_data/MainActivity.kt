@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import com.example.intent_dan_mengirim_data.anime.ListAnimeActivity
 
 class MainActivity : AppCompatActivity() {
 
