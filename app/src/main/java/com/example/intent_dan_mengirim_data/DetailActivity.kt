@@ -1,6 +1,5 @@
 package com.example.intent_dan_mengirim_data
 
-import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.intent_dan_mengirim_data.anime.animeapi.DetailAnimeAdapter
 import com.example.intent_dan_mengirim_data.databinding.ActivityDetailBinding
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler

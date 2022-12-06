@@ -1,4 +1,4 @@
-package com.example.intent_dan_mengirim_data
+package com.example.intent_dan_mengirim_data.anime.animelocal
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

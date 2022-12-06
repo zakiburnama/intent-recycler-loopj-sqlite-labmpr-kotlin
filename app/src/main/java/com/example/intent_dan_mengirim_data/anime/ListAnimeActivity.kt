@@ -1,4 +1,4 @@
-package com.example.intent_dan_mengirim_data
+package com.example.intent_dan_mengirim_data.anime
 
 import android.content.Intent
 import android.content.res.Configuration
@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.intent_dan_mengirim_data.DetailActivity
+import com.example.intent_dan_mengirim_data.anime.animeapi.Anime
+import com.example.intent_dan_mengirim_data.anime.animeapi.AnimeAdapter
 import com.example.intent_dan_mengirim_data.databinding.ActivityListAnimeBinding
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
@@ -19,7 +22,7 @@ class ListAnimeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListAnimeBinding
     private val listAnime = ArrayList<Anime>()
 
-    private val list = ArrayList<Animeku>()
+//    private val list = ArrayList<Animeku>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,36 +38,36 @@ class ListAnimeActivity : AppCompatActivity() {
     }
 
     //
-    private val listAnimeku: ArrayList<Animeku>
-        get() {
-            val dataName = resources.getStringArray(R.array.anime_name)
-            val dataDescription = resources.getStringArray(R.array.anime_description)
-            val dataPhoto = resources.obtainTypedArray(R.array.data_photo)
-            val listAnime = ArrayList<Animeku>()
-            for (i in dataName.indices) {
-                val anime = Animeku(dataName[i],dataDescription[i], dataPhoto.getResourceId(i, -1))
-                listAnime.add(anime)
-            }
-            return listAnime
-        }
-
-    private fun showRecyclerList() {
-        if (applicationContext.resources.configuration.orientation == Configuration
-                .ORIENTATION_LANDSCAPE) {
-            binding.listAnime.layoutManager = GridLayoutManager(this, 2)
-        } else {
-            binding.listAnime.layoutManager = LinearLayoutManager(this)
-        }
-
-        val adapter = AnimekuAdapter(list)
-        binding.listAnime.adapter = adapter
-        adapter.setOnItemClickCallback(object : AnimekuAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: Animeku) {
-                Toast.makeText(this@ListAnimeActivity, "Kamu memilih "
-                        + data.name, Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
+//    private val listAnimeku: ArrayList<Animeku>
+//        get() {
+//            val dataName = resources.getStringArray(R.array.anime_name)
+//            val dataDescription = resources.getStringArray(R.array.anime_description)
+//            val dataPhoto = resources.obtainTypedArray(R.array.data_photo)
+//            val listAnime = ArrayList<Animeku>()
+//            for (i in dataName.indices) {
+//                val anime = Animeku(dataName[i],dataDescription[i], dataPhoto.getResourceId(i, -1))
+//                listAnime.add(anime)
+//            }
+//            return listAnime
+//        }
+//
+//    private fun showRecyclerList() {
+//        if (applicationContext.resources.configuration.orientation == Configuration
+//                .ORIENTATION_LANDSCAPE) {
+//            binding.listAnime.layoutManager = GridLayoutManager(this, 2)
+//        } else {
+//            binding.listAnime.layoutManager = LinearLayoutManager(this)
+//        }
+//
+//        val adapter = AnimekuAdapter(list)
+//        binding.listAnime.adapter = adapter
+//        adapter.setOnItemClickCallback(object : AnimekuAdapter.OnItemClickCallback {
+//            override fun onItemClicked(data: Animeku) {
+//                Toast.makeText(this@ListAnimeActivity, "Kamu memilih "
+//                        + data.name, Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
 
     //
 

@@ -1,4 +1,4 @@
-package com.example.intent_dan_mengirim_data
+package com.example.intent_dan_mengirim_data.anime.animelocal
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.intent_dan_mengirim_data.R
 
 //class AnimekuAdapter {
 //}
