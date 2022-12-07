@@ -6,48 +6,5 @@
     <string name="intent_implicit">Intent Implicit</string>
     <string name="detail_activity">Detail Activity</string>
     <string name="masukkan_text_untuk_dikirim">Masukkan Text Untuk Dikirim</string>
-    <string name="title">title</string>
-    <string name="description">description</string>
-    <string name="submit">submit</string>
-
-
-    <string-array name="anime_name">
-        <item>Attack On Titan</item>
-        <item>Bleach</item>
-        <item>Dragon Ball</item>
-        <item>Gintama</item>
-        <item>Hunter X Hunter</item>
-        <item>Mob Psycho 100</item>
-        <item>My Hero Academia</item>
-        <item>Naruto</item>
-        <item>One Piece</item>
-        <item>One Punch Man</item>
-    </string-array>
-
-    <string-array name="anime_description">
-        <item>Anime Attack on Titan bercerita tentang umat manusia yang dibantai sejak berabad-abad yang lalu hingga hampir punah oleh makhluk mengerikan menyerupai manusia yang disebut Titan.</item>
-        <item>Bleach mengisahkan petualangan remaja keras kepala bernama Ichigo Kurosaki yang mewarisi takdir kedua orangtuanya, setelah dia mendapatkan kekuatan Shinigami. </item>
-        <item>Dragon Ball bercerita tentang seorang bocah bernama Goku yang hidup di tengah gunung sendirian. Dia lalu bertemu dengan Bulma, seorang gadis muda genius, yang berusaha mengumpulkan 7 bola ajaib yang katanya bisa mengabulkan semua keinginan.</item>
-        <item>Gintama bercerita tentang kehidupan sehari-hari tokoh utamanya, yaitu Sakata Gintoki, yang mendirikan usaha bernama “Yorozuya” bersama dua temannya dan satu anjing.</item>
-        <item>Hunter x Hunter memiliki latar kisah di sebuah dunia dan dihuni oleh sekumpulan orang-orang yang berambisi menjadi hunter andal.</item>
-        <item>Mob Psycho 100 mengisahkan tentang seorang anak bernama Shigeo Kageyama yang akrab dengan panggilan Mob. Ia memiliki masalah dengan kekuatan supernya.</item>
-        <item>My Hero Academia mengawali kisah dari sebuah kehidupan berlatar dunia istimewa. Setiap makhluk di sana memiliki kekuatan super atau Quirk.</item>
-        <item>Naruto bercerita seputar kehidupan tokoh utamanya, Naruto Uzumaki, seorang ninja yang hiperaktif, periang, dan ambisius yang ingin mewujudkan keinginannya untuk mendapatkan gelar Hokage, pemimpin dan ninja terkuat di desanya.</item>
-        <item>One Piece adalah sebuah manga dan anime yang menceritakan tentang petualangan sekelompok bajak laut dalam mencari harta karun legendaris, One Piece.</item>
-        <item>Saitama adalah seseorang yang tidak terlihat mengesankan dan memiliki hobi yang agak unik, yaitu menjadi pahlawan.</item>
-    </string-array>
-
-    <integer-array name="data_photo">
-        <item>@drawable/attack_on_titan</item>
-        <item>@drawable/bleach</item>
-        <item>@drawable/dragon_ball</item>
-        <item>@drawable/gintama</item>
-        <item>@drawable/hunter_x_hunter</item>
-        <item>@drawable/mob_psycho_100</item>
-        <item>@drawable/my_hero_academia</item>
-        <item>@drawable/naruto</item>
-        <item>@drawable/one_piece</item>
-        <item>@drawable/one_punch_man</item>
-    </integer-array>
 
 </resources>
