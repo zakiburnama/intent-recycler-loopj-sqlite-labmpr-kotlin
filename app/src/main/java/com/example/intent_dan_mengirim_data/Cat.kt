@@ -4,10 +4,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Car(
-    val name: String?,
-    val brand: String?,
-    val type: String?,
-    val year: Int?,
-    val price: Double?
+data class Cat(
+    val owner: String?,
+    val tag: String?,
+    val img: String?
 ) : Parcelable

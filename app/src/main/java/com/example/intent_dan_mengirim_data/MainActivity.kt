@@ -7,49 +7,54 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.intent_dan_mengirim_data.anime.animeapi.Anime
-import com.example.intent_dan_mengirim_data.anime.animeapi.AnimeAdapter
 import com.example.intent_dan_mengirim_data.databinding.ActivityMainBinding
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
-import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val listAnime = ArrayList<Anime>()
+    private val listCat = ArrayList<Cat>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        getListAnime()
+        getListCat()
     }
 
-
-    private fun getListAnime() {
+    private fun getListCat() {
         val client = AsyncHttpClient()
-        val url = "https://anime-facts-rest-api.herokuapp.com/api/v1"
+        val url = "https://cataas.com/api/cats"
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>,responseBody: ByteArray) {
                 val result = String(responseBody)
                 try {
-                    val responseObject = JSONObject(result)
-                    val data = responseObject.getString("data")
-                    val jsonArray = JSONArray(data)
+                    val jsonArray = JSONArray(result)
                     for (i in 0 until jsonArray.length()) {
                         val jsonObject = jsonArray.getJSONObject(i)
 
-                        val id = jsonObject.getInt("anime_id")
-                        val name = jsonObject.getString("anime_name")
-                        val img = jsonObject.getString("anime_img")
+                        val id = jsonObject.getString("_id")
+                        val owner = jsonObject.getString("owner")
 
-                        listAnime.add(Anime(id, name, img))
+                        val tags = jsonObject.getJSONArray("tags")
+                        var tag: String? = null
+                        for (j in 0 until tags.length()) {
+                            tag = if (tag == null)
+                                tags[j].toString()
+                            else
+                                "$tag, " + tags[j].toString()
+                        }
+
+                        val img = "https://cataas.com/cat/$id"
+
+                        listCat.add(Cat(owner, tag, img))
                     }
+
                     showRecycler()
                 } catch (e: Exception) {
                     Toast.makeText(this@MainActivity,e.message, Toast.LENGTH_SHORT).show()
@@ -64,19 +69,19 @@ class MainActivity : AppCompatActivity() {
     private fun showRecycler() {
         if (applicationContext.resources.configuration.orientation == Configuration
                 .ORIENTATION_LANDSCAPE) {
-            binding.listAnime.layoutManager = GridLayoutManager(this, 2)
+            binding.listCat.layoutManager = GridLayoutManager(this, 2)
         } else {
-            binding.listAnime.layoutManager = LinearLayoutManager(this)
+            binding.listCat.layoutManager = LinearLayoutManager(this)
         }
 
-        val adapter = AnimeAdapter(listAnime)
-        binding.listAnime.adapter = adapter
+        val adapter = CatAdapter(listCat)
+        binding.listCat.adapter = adapter
 
-        adapter.setOnItemClickCallback(object : AnimeAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: Anime) {
+        adapter.setOnItemClickCallback(object : CatAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: Cat) {
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                intent.putExtra(DetailActivity.EXTRA_ANIME, data.name)
-                intent.putExtra(DetailActivity.EXTRA_ANIME_IMG, data.img)
+                intent.putExtra(DetailActivity.EXTRA_CAT, data.owner)
+                intent.putExtra(DetailActivity.EXTRA_CAT_IMG, data.img)
                 startActivity(intent)
             }
         })

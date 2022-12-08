@@ -1,4 +1,4 @@
-package com.example.intent_dan_mengirim_data.anime.animeapi
+package com.example.intent_dan_mengirim_data
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.intent_dan_mengirim_data.R
 import com.squareup.picasso.Picasso
 
 
-class AnimeAdapter(private val listAnime: ArrayList<Anime>) : RecyclerView.Adapter<AnimeAdapter.ViewHolder>() {
+class CatAdapter(private val listCat: ArrayList<Cat>) : RecyclerView.Adapter<CatAdapter.ViewHolder>() {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -20,34 +19,34 @@ class AnimeAdapter(private val listAnime: ArrayList<Anime>) : RecyclerView.Adapt
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.item_anime, viewGroup, false)
+            .inflate(R.layout.item_cat, viewGroup, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.tvItemId.text = listAnime[position].id.toString()
-        viewHolder.tvItemName.text = listAnime[position].name
+        viewHolder.tvItemId.text = listCat[position].owner.toString()
+        viewHolder.tvItemName.text = listCat[position].tag
 
-        val img = listAnime[position].img
+        val img = listCat[position].img
 
         Picasso.get().load(img).into(viewHolder.avatar)
 
         viewHolder.itemView.setOnClickListener{
-            onItemClickCallback.onItemClicked(listAnime[viewHolder.adapterPosition])
+            onItemClickCallback.onItemClicked(listCat[viewHolder.adapterPosition])
         }
     }
 
     override fun getItemCount(): Int {
-        return listAnime.size
+        return listCat.size
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvItemName: TextView = view.findViewById(R.id.tv_anime_name)
-        val tvItemId: TextView = view.findViewById(R.id.tv_anime_id)
-        val avatar: ImageView = view.findViewById(R.id.img_anime)
+        val tvItemName: TextView = view.findViewById(R.id.tv_cat_name)
+        val tvItemId: TextView = view.findViewById(R.id.tv_cat_id)
+        val avatar: ImageView = view.findViewById(R.id.img_cat)
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: Anime)
+        fun onItemClicked(data: Cat)
     }
 }
