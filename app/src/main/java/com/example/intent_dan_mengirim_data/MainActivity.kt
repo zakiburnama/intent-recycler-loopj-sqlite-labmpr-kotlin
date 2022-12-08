@@ -1,63 +1,85 @@
 package com.example.intent_dan_mengirim_data
 
 import android.content.Intent
-import android.net.Uri
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.EditText
-import com.example.intent_dan_mengirim_data.anime.ListAnimeActivity
+import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.intent_dan_mengirim_data.anime.animeapi.Anime
+import com.example.intent_dan_mengirim_data.anime.animeapi.AnimeAdapter
+import com.example.intent_dan_mengirim_data.databinding.ActivityMainBinding
+import com.loopj.android.http.AsyncHttpClient
+import com.loopj.android.http.AsyncHttpResponseHandler
+import cz.msebera.android.httpclient.Header
+import org.json.JSONArray
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var etKirimData: EditText
+    private lateinit var binding: ActivityMainBinding
+
+    private val listAnime = ArrayList<Anime>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        etKirimData = findViewById(R.id.et_kirim_data)
-
+        getListAnime()
     }
 
-    fun onClick(view: View) {
-        when (view.id) {
-            R.id.btn_intent_explicit -> {
-//                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                val intent = Intent(this@MainActivity, ListAnimeActivity::class.java)
-                startActivity(intent)
-            }
 
-            R.id.btn_intent_data -> {
-                val text = etKirimData.text.toString()
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                intent.putExtra(DetailActivity.EXTRA_TEXT, text)
-//                val intent = Intent(this@MainActivity, HomeworkActivity::class.java)
-                startActivity(intent)
-            }
+    private fun getListAnime() {
+        val client = AsyncHttpClient()
+        val url = "https://anime-facts-rest-api.herokuapp.com/api/v1"
+        client.get(url, object : AsyncHttpResponseHandler() {
+            override fun onSuccess(statusCode: Int, headers: Array<Header>,responseBody: ByteArray) {
+                val result = String(responseBody)
+                try {
+                    val responseObject = JSONObject(result)
+                    val data = responseObject.getString("data")
+                    val jsonArray = JSONArray(data)
+                    for (i in 0 until jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
 
-            R.id.btn_intent_objek -> {
-                val carSpek = Car(
-                    "Civic",
-                    "Honda",
-                    "Sedan",
-                    1997,
-                    57000000.00
-                )
-                Log.i("TAG", carSpek.toString())
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                intent.putExtra(DetailActivity.EXTRA_CAR, carSpek)
-                intent.putExtra(DetailActivity.EXTRA_BOOL, true)
-                startActivity(intent)
-            }
+                        val id = jsonObject.getInt("anime_id")
+                        val name = jsonObject.getString("anime_name")
+                        val img = jsonObject.getString("anime_img")
 
-            R.id.btn_intent_implicit -> {
-                val phoneNumber = "081234567890"
-                val dialPhoneIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
-                startActivity(dialPhoneIntent)
+                        listAnime.add(Anime(id, name, img))
+                    }
+                    showRecycler()
+                } catch (e: Exception) {
+                    Toast.makeText(this@MainActivity,e.message, Toast.LENGTH_SHORT).show()
+                }
             }
+            override fun onFailure(statusCode: Int, headers: Array<Header>, responseBody: ByteArray, error: Throwable) {
+                Toast.makeText(this@MainActivity, statusCode, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun showRecycler() {
+        if (applicationContext.resources.configuration.orientation == Configuration
+                .ORIENTATION_LANDSCAPE) {
+            binding.listAnime.layoutManager = GridLayoutManager(this, 2)
+        } else {
+            binding.listAnime.layoutManager = LinearLayoutManager(this)
         }
+
+        val adapter = AnimeAdapter(listAnime)
+        binding.listAnime.adapter = adapter
+
+        adapter.setOnItemClickCallback(object : AnimeAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: Anime) {
+                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_ANIME, data.name)
+                intent.putExtra(DetailActivity.EXTRA_ANIME_IMG, data.img)
+                startActivity(intent)
+            }
+        })
     }
 
 }

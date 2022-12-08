@@ -28,33 +28,37 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val tvGetText: TextView = findViewById(R.id.tv_text1)
+        val catImg = "https://cataas.com/cat/ZHrXPVRJniYPR6pp"
 
-        val getText = intent?.getStringExtra(EXTRA_TEXT)
-        tvGetText.text = getText
+        Picasso.get().load(catImg).into(binding.ivAnime)
 
-        val getBool = intent?.getBooleanExtra(EXTRA_BOOL, false)
-
-        if (getBool == true) {
-            val getCar = intent?.getParcelableExtra<Car>(EXTRA_CAR)
-            Log.i("TAG", getCar?.name.toString())
-            val carSpek = "Car Specification:\n" +
-                    "\nName: ${getCar?.name.toString()} " +
-                    "\nBrand: ${getCar?.brand.toString()} " +
-                    "\nType: ${getCar?.type.toString()} " +
-                    "\nYear: ${getCar?.year.toString()} " +
-                    "\nPrice: ${getCar?.price.toString()}"
-            tvGetText.text = carSpek
-        }
+//        val tvGetText: TextView = findViewById(R.id.tv_text1)
+//
+//        val getText = intent?.getStringExtra(EXTRA_TEXT)
+//        tvGetText.text = getText
+//
+//        val getBool = intent?.getBooleanExtra(EXTRA_BOOL, false)
+//
+//        if (getBool == true) {
+//            val getCar = intent?.getParcelableExtra<Car>(EXTRA_CAR)
+//            Log.i("TAG", getCar?.name.toString())
+//            val carSpek = "Car Specification:\n" +
+//                    "\nName: ${getCar?.name.toString()} " +
+//                    "\nBrand: ${getCar?.brand.toString()} " +
+//                    "\nType: ${getCar?.type.toString()} " +
+//                    "\nYear: ${getCar?.year.toString()} " +
+//                    "\nPrice: ${getCar?.price.toString()}"
+//            tvGetText.text = carSpek
+//        }
 
 
         // Untuk NETWORKING
-        getAnime = intent?.getStringExtra(EXTRA_ANIME).toString()
+//        getAnime = intent?.getStringExtra(EXTRA_ANIME).toString()
 
-        val getAnimeImg = intent?.getStringExtra(EXTRA_ANIME_IMG).toString()
-        Picasso.get().load(getAnimeImg).into(binding.ivAnime)
+//        val getAnimeImg = intent?.getStringExtra(EXTRA_ANIME_IMG).toString()
+//        Picasso.get().load(getAnimeImg).into(binding.ivAnime)
 
-        getListFacts()
+//        getListFacts()
     }
 
     private fun getListFacts() {
