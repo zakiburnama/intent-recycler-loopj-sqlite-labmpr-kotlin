@@ -1,63 +1,126 @@
 package com.example.intent_dan_mengirim_data
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.EditText
-import com.example.intent_dan_mengirim_data.anime.ListAnimeActivity
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.intent_dan_mengirim_data.databinding.ActivityMainBinding
+import com.example.intent_dan_mengirim_data.db.HomeworkHelper
+import com.example.intent_dan_mengirim_data.helper.MappingHelper
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var etKirimData: EditText
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: HomeworkAdapter
+
+    val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.data != null) {
+            when (result.resultCode) {
+                AddHomeworkActivity.RESULT_ADD -> {
+                    val homework =
+                        result.data?.getParcelableExtra<Homework>(AddHomeworkActivity.
+                        EXTRA_HOMEWORK) as Homework
+                    adapter.addItem(homework)
+                    binding.rvHomework.smoothScrollToPosition(adapter.itemCount - 1)
+                    showSnackbarMessage("Data berhasil ditambahkan")
+                }
+                AddHomeworkActivity.RESULT_UPDATE -> {
+                    val homework =
+                        result.data?.getParcelableExtra<Homework>(AddHomeworkActivity.
+                        EXTRA_HOMEWORK) as Homework
+                    val position =
+                        result?.data?.getIntExtra(AddHomeworkActivity.EXTRA_POSITION, 0)
+                                as Int
+                    adapter.updateItem(position, homework)
+                    binding.rvHomework.smoothScrollToPosition(position)
+                    showSnackbarMessage("Data berhasil diubah")
+                }
+                AddHomeworkActivity.RESULT_DELETE -> {
+                    val position =
+                        result?.data?.getIntExtra(AddHomeworkActivity.EXTRA_POSITION, 0)
+                                as Int
+                    adapter.removeItem(position)
+                    showSnackbarMessage("Data berhasil dihapus")
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        etKirimData = findViewById(R.id.et_kirim_data)
+        supportActionBar?.title = "Homework"
+        binding.rvHomework.layoutManager = LinearLayoutManager(this)
+        binding.rvHomework.setHasFixedSize(true)
+
+        adapter = HomeworkAdapter(object : HomeworkAdapter.OnItemClickCallback {
+            override fun onItemClicked(selectedHomework: Homework?, position: Int?) {
+                val intent =
+                    Intent(this@MainActivity, AddHomeworkActivity::class.java)
+                intent.putExtra(AddHomeworkActivity.EXTRA_HOMEWORK, selectedHomework)
+                intent.putExtra(AddHomeworkActivity.EXTRA_POSITION, position)
+                resultLauncher.launch(intent)
+            }
+        })
+        binding.rvHomework.adapter = adapter
+
+        binding.fabAdd.setOnClickListener {
+            val intent = Intent(this, AddHomeworkActivity::class.java)
+            resultLauncher.launch(intent)
+        }
+
+        if (savedInstanceState == null) {
+            loadHomeworkAsync()
+        } else {
+            val list = savedInstanceState.getParcelableArrayList<Homework>(MainActivity.EXTRA_STATE)
+            if (list != null)
+                adapter.listHomework = list
+        }
 
     }
 
-    fun onClick(view: View) {
-        when (view.id) {
-            R.id.btn_intent_explicit -> {
-//                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                val intent = Intent(this@MainActivity, ListAnimeActivity::class.java)
-                startActivity(intent)
+    private fun loadHomeworkAsync() {
+        lifecycleScope.launch {
+            val homeworkHelper = HomeworkHelper.getInstance(applicationContext)
+            homeworkHelper.open()
+            val deferredHomework = async(Dispatchers.IO) {
+                val cursor = homeworkHelper.queryAll()
+                MappingHelper.mapCursorToArrayList(cursor)
             }
-
-            R.id.btn_intent_data -> {
-                val text = etKirimData.text.toString()
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                intent.putExtra(DetailActivity.EXTRA_TEXT, text)
-//                val intent = Intent(this@MainActivity, HomeworkActivity::class.java)
-                startActivity(intent)
+            val homework = deferredHomework.await()
+            if (homework.size > 0) {
+                adapter.listHomework = homework
+            } else {
+                adapter.listHomework = ArrayList()
+                showSnackbarMessage("Data tidak ada")
             }
-
-            R.id.btn_intent_objek -> {
-                val carSpek = Car(
-                    "Civic",
-                    "Honda",
-                    "Sedan",
-                    1997,
-                    57000000.00
-                )
-                Log.i("TAG", carSpek.toString())
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                intent.putExtra(DetailActivity.EXTRA_CAR, carSpek)
-                intent.putExtra(DetailActivity.EXTRA_BOOL, true)
-                startActivity(intent)
-            }
-
-            R.id.btn_intent_implicit -> {
-                val phoneNumber = "081234567890"
-                val dialPhoneIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
-                startActivity(dialPhoneIntent)
-            }
+            homeworkHelper.close()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList(MainActivity.EXTRA_STATE, adapter.listHomework)
+    }
+
+
+    private fun showSnackbarMessage(message: String) {
+        Snackbar.make(binding.rvHomework, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val EXTRA_STATE = "EXTRA_STATE"
     }
 
 }
